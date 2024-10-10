@@ -171,10 +171,12 @@ def builder(
   # Convert settings from python to Lua format.
   lab2d_settings_dict = parse_python_settings_for_dmlab2d(lab2d_settings)
 
+  #This is fine because it uses the python rng
   if env_seed is None:
     # Select a long seed different than zero.
     env_seed = random.randint(1, _MAX_SEED)
   env_seeds = (seed % (_MAX_SEED + 1) for seed in itertools.count(env_seed))
+
 
   def build_environment():
     seed = next(env_seeds)

@@ -124,7 +124,7 @@ local function simulateUsage(gameObject)
 end
 
 local function updateGrid(grid)
-  random:seed(1)
+  random:seed(2)
   grid:update(random)
 end
 

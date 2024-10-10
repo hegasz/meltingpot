@@ -933,7 +933,7 @@ function GameInteractionZapper:disallowZapping()
 end
 
 function GameInteractionZapper:allowZapping()
-  self._canZap = true
+  self._canZap = false
 end
 
 

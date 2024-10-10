@@ -63,6 +63,7 @@ function Avatar:__init__(kwargs)
       {'waitState', args.stringType},
       -- `speed` (float >=0 and <= 1.0): If 1.0 then all movement actions are
       --   executed, otherwise prevent movements with probability 1 - speed.
+      --{'speed', 1.0},
       {'speed', args.default(1.0), args.ge(0.0), args.le(1.0)},
       {'actionOrder', args.default({'move', 'turn'}), args.tableType},
       {'actionSpec', args.default(
@@ -95,8 +96,11 @@ function Avatar:__init__(kwargs)
       -- `randomizeInitialOrientation` (bool) default True. Avatar orientations
       -- are assigned randomly at the start of each episode. If you instead
       -- set this to false then initial Avatar orientation is always North.
-      {'randomizeInitialOrientation', args.default(true), args.booleanType},
+      {'randomizeInitialOrientation', args.default(false), args.booleanType},
   })
+  -- Ensure randomizeInitialOrientation is set to false
+  kwargs.randomizeInitialOrientation = false
+
   Avatar.Base.__init__(self, kwargs)
   self._config.kwargs = kwargs
 
@@ -122,6 +126,7 @@ function Avatar:__init__(kwargs)
     self._config.postInitialSpawnGroup = kwargs.postInitialSpawnGroup
   end
   self._spawnGroup = self._config.initialSpawnGroup
+
 end
 
 -- Call initializeVolatileVariables during `awake` and `reset`.
@@ -134,6 +139,7 @@ function Avatar:_initializeVolatileVariables()
   self._connectedPiecesSet = {}
   self._freezeCounter = 0
   self._removalCounter = 0
+  self._index = kwargs.index
 end
 
 function Avatar:awake()
@@ -186,18 +192,15 @@ function Avatar:registerUpdaters(updaterRegistry)
       end
     end
   end
-
   if self.useAbsoluteCoordinates then
     updaterRegistry:registerUpdater{
         updateFn = moveAbsolute,
-        priority = 150,
-        probability = self._speed,
+        priority = 200*self._index,
     }
   else
     updaterRegistry:registerUpdater{
         updateFn = move,
-        priority = 150,
-        probability = self._speed,
+        priority = 200*self._index,
     }
   end
 end
@@ -274,6 +277,29 @@ function Avatar:addObservations(tileSet, world, observations)
       end
   }
   observations[#observations + 1] = spec
+
+    -- Add new observation for live apples
+  local id = self._config._index
+  local stringId = tostring(id)
+
+  observations[#observations + 1] = {
+    name = stringId .. '.LIVE_APPLE_COUNT',
+    type = 'Doubles',
+    shape = {},  -- Scalar value
+    func = function(grid)
+      local liveAppleCount = 0
+      local allGameObjects = self.gameObject.simulation:getAllGameObjects()
+      for _, obj in pairs(allGameObjects) do
+        -- if obj:hasComponent('StateManager') and
+        --    obj:getComponent('StateManager'):getState() == 'apple' then
+        if obj:getState() == 'apple' then
+          liveAppleCount = liveAppleCount + 1
+        end
+      end
+      return liveAppleCount
+    end
+  }
+
 end
 
 function Avatar:reset()
@@ -748,7 +774,7 @@ function Zapper:disallowZapping()
 end
 
 function Zapper:allowZapping()
-  self._disallowZapping = false
+  self._disallowZapping = true
 end
 
 --[[ Prevent zapping for `numFrames` steps, then allow it again.]]

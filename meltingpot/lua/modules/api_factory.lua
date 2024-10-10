@@ -86,7 +86,7 @@ local function apiFactory(env)
     if self._grid then
       self._grid:destroy()
     end
-    random:seed(seed)
+    random:seed(2)
     local stateCallbacks = {}
     self.simulation:stateCallbacks(stateCallbacks)
     local textMap = self.simulation:textMap()

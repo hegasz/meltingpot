@@ -67,7 +67,7 @@ local function simulateUsage()
 end
 
 function tests.moveAbs()
-  random:seed(1)
+  random:seed(2)
   local grid, piece = simulateUsage()
   log.info("grid\n" .. tostring(grid))
   asserts.tablesEQ(grid:position(0), {3, 0})
@@ -78,7 +78,7 @@ function tests.moveAbs()
 end
 
 function tests.teleport()
-  random:seed(1)
+  random:seed(2)
   local grid, piece = simulateUsage()
   log.info("grid\n" .. tostring(grid))
   asserts.tablesEQ(grid:position(0), {3, 0})

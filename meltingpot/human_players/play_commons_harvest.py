@@ -21,12 +21,15 @@ Use `TAB` to switch between players.
 
 import argparse
 import json
-
+import os
 from meltingpot.configs.substrates import commons_harvest__closed
 from meltingpot.configs.substrates import commons_harvest__open
 from meltingpot.configs.substrates import commons_harvest__partnership
 from meltingpot.human_players import level_playing_utils
 from ml_collections import config_dict
+
+
+os.environ['LD_PRELOAD'] = '/home/ezipe/.miniconda3/lib/libstdc++.so.6'
 
 environment_configs = {
     'commons_harvest__closed': commons_harvest__closed,
@@ -48,9 +51,12 @@ def verbose_fn(unused_env, unused_player_index, unused_current_player_index):
 def main():
   parser = argparse.ArgumentParser(description=__doc__)
   parser.add_argument(
-      '--level_name', type=str, default='commons_harvest__closed',
+      '--level_name',
+      type=str,
+      default='commons_harvest__open',
       choices=environment_configs.keys(),
-      help='Level name to load')
+      help='Level name to load',
+  )
   parser.add_argument(
       '--observation', type=str, default='RGB', help='Observation to render')
   parser.add_argument(

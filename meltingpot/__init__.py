@@ -15,9 +15,9 @@
 
 import sys
 
-from meltingpot import bot
-from meltingpot import scenario
-from meltingpot import substrate
+from meltingpot.meltingpot import bot
+from meltingpot.meltingpot import scenario
+from meltingpot.meltingpot import substrate
 
 try:
   # Keep `import meltingpot.python` working for external meltingpot.

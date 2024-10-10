@@ -608,7 +608,7 @@ end
 a random order, where each object has the given probability of being returned.]]
 function BaseSimulation:getGroupShuffledWithProbability(group, probability)
   local pieces = self._grid:groupShuffledWithProbability(
-      random, group, probability)
+      random, group, probability) --#!#
   local objects = {}
   for _, piece in ipairs(pieces) do
     table.insert(objects, self:getGameObjectFromPiece(piece))

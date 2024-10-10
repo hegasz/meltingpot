@@ -18,13 +18,13 @@ from typing import Any
 
 import chex
 import dm_env
-from meltingpot.utils.substrates import builder
-from meltingpot.utils.substrates.wrappers import base
-from meltingpot.utils.substrates.wrappers import collective_reward_wrapper
-from meltingpot.utils.substrates.wrappers import discrete_action_wrapper
-from meltingpot.utils.substrates.wrappers import multiplayer_wrapper
-from meltingpot.utils.substrates.wrappers import observables
-from meltingpot.utils.substrates.wrappers import observables_wrapper
+from meltingpot.meltingpot.utils.substrates import builder
+from meltingpot.meltingpot.utils.substrates.wrappers import base
+from meltingpot.meltingpot.utils.substrates.wrappers import collective_reward_wrapper
+from meltingpot.meltingpot.utils.substrates.wrappers import discrete_action_wrapper
+from meltingpot.meltingpot.utils.substrates.wrappers import multiplayer_wrapper
+from meltingpot.meltingpot.utils.substrates.wrappers import observables
+from meltingpot.meltingpot.utils.substrates.wrappers import observables_wrapper
 import reactivex
 from reactivex import subject
 
@@ -135,5 +135,5 @@ def build_substrate(
   env = discrete_action_wrapper.Wrapper(env, action_table=action_table)
   # Add a wrapper that augments adds an observation of the collective
   # reward (sum of all players' rewards).
-  env = collective_reward_wrapper.CollectiveRewardWrapper(env)
+  env = collective_reward_wrapper.CollectiveRewardWrapper(env) #!!! maybe use this?
   return Substrate(env)

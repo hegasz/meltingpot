@@ -332,6 +332,10 @@ def run_episode(
       # Compute next timestep
       actions = action_reader.step(player_prefix) if player_count else []
       timestep = env.step(actions)
+    #   print()
+    #   for i in range(1, 8):
+    #       print(i, timestep[-1][f'{i}.LIVE_APPLE_COUNT'])
+
       if timestep.step_type == dm_env.StepType.LAST:
         if reset_env_when_done:
           timestep = env.reset()

@@ -14,7 +14,7 @@ limitations under the License.
 ]]
 
 --[[ A library of common components that one may add to game objects. The two
-mandatory components (StateManager, Transform) are also implemented here.
+mandatory components (StateManager, o) are also implemented here.
 ]]
 
 local helpers = require 'common.helpers'
